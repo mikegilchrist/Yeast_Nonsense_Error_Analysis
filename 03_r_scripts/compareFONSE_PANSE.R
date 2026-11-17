@@ -15,7 +15,10 @@ args <- commandArgs(trailingOnly = TRUE)
 fonse_dir <- if (length(args) >= 1) args[1] else stop("need fonse fit dir")
 out_pdf   <- if (length(args) >= 2) args[2] else file.path(fonse_dir, "fonse_vs_panse.pdf")
 
-YR <- "/home/mikeg/Repositories/Yeast_Nonsense_Error_Analysis"
+# Repository root: this script lives in <root>/03_r_scripts/. Set YEAST_ROOT to override;
+# when sourced interactively (no --file argument) the working directory is used.
+script_path <- sub("^--file=", "", grep("^--file=", commandArgs(FALSE), value = TRUE))
+YR <- Sys.getenv("YEAST_ROOT", unset = if (length(script_path)) normalizePath(file.path(dirname(script_path[1]), "..")) else getwd())
 panse_dir <- file.path(YR, "01_results/00_panse_fits",
   "2026-01-07_Weinberg_etal_2016_all_frames_filter_genes_shorter_than_225_codons_200_ramp_updated_posterior_variable_nse",
   "final_restart/Parameter_est")
